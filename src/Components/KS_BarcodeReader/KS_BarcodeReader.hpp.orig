@@ -1,0 +1,162 @@
+/*!
+ * \file CvFilter2D_Processor.hpp
+ * \brief
+ * \author mstefanc
+ * \date 2010-07-05
+ */
+
+#ifndef KS_BARCODEREADER_HPP_
+#define KS_BARCODEREADER_HPP_
+
+#include "Component_Aux.hpp"
+#include "Component.hpp"
+#include "Panel_Empty.hpp"
+#include "DataStream.hpp"
+#include "Props.hpp"
+
+#include <Types/stream_OpenCV.hpp>
+
+#include <zxing/common/Counted.h>
+#include <zxing/BinaryBitmap.h>
+#include <zxing/DecodeHints.h>
+
+#include <ImageMagick/Magick++.h>
+
+#include <zxing/Result.h>
+
+#include <cv.h>
+#include <highgui.h>
+
+#include <sstream>
+
+/**
+  */
+
+namespace Processors {
+namespace BCReader {
+
+using namespace cv;
+using namespace zxing;
+
+/*!
+ * \brief Properties
+ */
+struct Props: public Base::Props
+{
+	/*!
+	 * \copydoc Base::Props::load
+	 */
+	void load(const ptree & pt)
+	{
+	}
+
+	/*!
+	 * \copydoc Base::Props::save
+	 */
+	void save(ptree & pt)
+	{
+
+	}
+
+};
+
+/*!
+ * \class KS_CvMat2MagicImage_Processor
+ * \brief Convolves an image with the kernel
+ */
+class KS_BarcodeReader: public Base::Component
+{
+public:
+	/*!
+	 * Constructor.
+	 */
+	KS_BarcodeReader(const std::string & name = "");
+
+	/*!
+	 * Destructor
+	 */
+	virtual ~KS_BarcodeReader();
+
+	/*!
+	 * Return window properties
+	 */
+	Base::Props * getProperties()
+	{
+		return &props;
+	}
+
+protected:
+
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
+
+	/*!
+	 * Event handler function.
+	 */
+	void onNewImage();
+
+	/// Event handler.
+	Base::EventHandler <KS_BarcodeReader> h_onNewImage;
+
+	/// Input data stream
+	Base::DataStreamIn <Magick::Image> in_img;
+
+	/// Threshold properties
+	Props props;
+
+private:
+	Ref<Result> decode(Ref<BinaryBitmap> image, DecodeHints hints);
+<<<<<<< HEAD
+=======
+	int test_image(Magick::Image& image, bool hybrid, string expected);
+	int test_image_hybrid(Magick::Image& image, string expected);
+	int test_image_global(Magick::Image& image, string expected);
+	string get_expected(string imagefilename);
+>>>>>>> dd514edd2cce7a0fb16b9aabc72d91772a6f0555
+
+	bool raw_dump;
+	bool show_format;
+	bool tryHarder;
+	bool show_filename;
+<<<<<<< HEAD
+	bool hybrid;
+=======
+>>>>>>> dd514edd2cce7a0fb16b9aabc72d91772a6f0555
+
+	static const int MAX_EXPECTED = 1024;
+};
+
+}//: namespace BcReader
+}//: namespace Processors
+
+
+/*
+ * Register processor component.
+ */
+REGISTER_PROCESSOR_COMPONENT("KS_BarcodeReader", Processors::BCReader::KS_BarcodeReader, Common::Panel_Empty)
+
+#endif /* KS_BARCODEREADER_HPP_ */
+

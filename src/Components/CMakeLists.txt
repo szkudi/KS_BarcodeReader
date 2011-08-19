@@ -1,0 +1,10 @@
+# Add all components here using ADD_COMPONENT(<COMPONENT_DIRECTORY>)
+ADD_COMPONENT(KS_BarcodeReader)
+
+ADD_COMPONENT(KS_BCReader)
+
+ADD_COMPONENT(KS_CvMat2MagickImage)
+
+ADD_COMPONENT(KS_MagickImage2CvMat)
+
+ADD_COMPONENT(KS_ROICrop)
